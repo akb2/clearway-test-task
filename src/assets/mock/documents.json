@@ -3,22 +3,27 @@
   "pages": [
     {
       "number": 1,
+      "name": "Первый параграф",
       "imageUrl": "pages/1.png"
     },
     {
       "number": 2,
+      "name": "Черный параграф",
       "imageUrl": "pages/2.png"
     },
     {
       "number": 3,
+      "name": "Зеленый параграф",
       "imageUrl": "pages/3.png"
     },
     {
       "number": 4,
+      "name": "Красный параграф",
       "imageUrl": "pages/4.png"
     },
     {
       "number": 5,
+      "name": "Синий параграф",
       "imageUrl": "pages/5.png"
     }
   ]

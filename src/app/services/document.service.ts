@@ -22,8 +22,8 @@ export class DocumentService {
 
   private dtoToDocumentItem(dto: any): DocumentItem {
     const id = AnyToInt(dto?.number);
-    const name = "Документ #" + id;
-    const imageUrl = AnyToString(dto?.imageUrl);
+    const name = AnyToString(dto?.name);
+    const imageUrl = "/assets/images/" + AnyToString(dto?.imageUrl);
 
     return { id, name, imageUrl };
   }
