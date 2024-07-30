@@ -1,5 +1,5 @@
-import { DocumentState } from "./document/document.state";
+import { DOCUMENT_KEY, DocumentState } from "./document/document.state";
 
 export interface AppState {
-  document: DocumentState;
+  [DOCUMENT_KEY]: DocumentState;
 }
