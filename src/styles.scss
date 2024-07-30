@@ -1,4 +1,24 @@
-/* Reset styles */
+@use "@angular/material" as mat;
+@use "colors";
+
+$baseTheme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: colors.$matPrimary
+    ),
+    density: (
+      scale: 0
+    )
+  )
+);
+
+@include mat.core();
+
+:root {
+  @include mat.all-component-themes($baseTheme);
+}
+
 html,
 body,
 div,
@@ -70,9 +90,14 @@ td {
   background: transparent;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   line-height: 1;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 1rem;
   letter-spacing: 0;
