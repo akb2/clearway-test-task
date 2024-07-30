@@ -7,6 +7,8 @@ const routes: Routes = [
   // { path: "**", redirectTo: "/documents" },
   // Список документов
   { path: "documents", loadChildren: () => import("./pages/documents/documents.module").then(m => m.DocumentsModule) },
+  // Открытие документа
+  { path: "documents/view/:id", loadChildren: () => import("./pages/documents-view/documents-view.module").then(m => m.DocumentsViewModule) },
 ];
 
 @NgModule({
