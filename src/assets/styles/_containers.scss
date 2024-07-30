@@ -12,14 +12,19 @@ $widths: (
 );
 
 $paddingsY: (
-  xxsmall: 15px,
-  xsmall: 15px,
+  default: 15px,
   small: 30px,
   middle: 45px,
   large: 60px,
   xlarge: 90px
 );
-$paddingX: 15px;
+
+$paddingsX: (
+  default: 30px,
+  xxsmall: 15px,
+  xsmall: 15px,
+  small: 15px
+);
 
 $avatarSize: 48px;
 
@@ -53,14 +58,11 @@ $mobileMenuHeight: 240px;
 @mixin container {
   margin: 0 auto;
   max-width: 100%;
-  padding-left: $paddingX;
-  padding-right: $paddingX;
   background-color: inherit;
   // Цикл по размерам
-  @include screens.adaptiveFor($widths, $paddingsY) using ($width, $paddingY) {
+  @include screens.adaptiveFor($widths, $paddingsY, $paddingsX) using ($width, $paddingY, $paddingX) {
     width: $width;
-    padding-top: $paddingY;
-    padding-bottom: $paddingY;
+    padding: #{$paddingY} #{$paddingX};
   }
   // Последующие блоки
   & + & {

@@ -1,25 +1,24 @@
 @use "sass:map";
-@use "containers";
 @use "colors";
+@use "mixins";
 
 .section {
   background-color: map.get(colors.$matPrimary, 30);
 }
 
 .container {
-  @include containers.container;
-  // Свойства
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
 
 .header {
-  display: grid;
+  display: flex;
   align-items: center;
   height: 80px;
 
   &__title {
-    font-size: 24px;
+    @include mixins.lineClamp(1, 1.2, 24px, 0, true);
+
     font-weight: 400;
     color: map.get(colors.$matPrimary, 100);
   }

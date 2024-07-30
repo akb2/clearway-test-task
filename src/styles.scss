@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "colors";
+@use "containers";
 
 $baseTheme: mat.define-theme(
   (
@@ -88,6 +89,7 @@ td {
   font-size: 100%;
   vertical-align: baseline;
   background: transparent;
+  box-sizing: border-box;
 }
 
 html,
@@ -103,4 +105,8 @@ body {
   letter-spacing: 0;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+.container {
+  @include containers.container;
 }
