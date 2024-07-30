@@ -1,2 +1,8 @@
 <base-layout title="Список документов"
-             [loading]="loading"></base-layout>
+             [loading]="loading">
+  <div class="container">
+    <app-document-card [document]="document"
+                       class="container__item"
+                       *ngFor="let document of documents$ | async"></app-document-card>
+  </div>
+</base-layout>
