@@ -1,0 +1,20 @@
+<mat-card *ngIf="!!document">
+  <mat-card-header>
+    <mat-card-title>{{document.name}}</mat-card-title>
+    <mat-card-subtitle>Номер: {{document.id}}</mat-card-subtitle>
+  </mat-card-header>
+  <!-- Превью -->
+  <div class="image">
+    <img mat-card-image
+         [src]="document.imageUrl"
+         [alt]="document.name">
+  </div>
+  <!-- Действия -->
+  <mat-card-actions align="end">
+    <a mat-button
+       routerLink="/documents/{{document.id}}">
+      Открыть
+      <mat-icon iconPositionEnd>chevron_right</mat-icon>
+    </a>
+  </mat-card-actions>
+</mat-card>
