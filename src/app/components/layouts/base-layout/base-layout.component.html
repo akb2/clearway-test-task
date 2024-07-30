@@ -1,0 +1,16 @@
+<div class="layout">
+  <app-header [title]="title"
+              class="header"></app-header>
+  <!-- Содержимое -->
+  <div class="content"
+       *ngIf="!loading; else loader">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+<!-- Загрузчик -->
+<ng-template #loader>
+  <div class="loader">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
