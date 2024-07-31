@@ -25,7 +25,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   private zoomStep = 1;
   zoom = 1;
   zoomMin = 1;
-  zoomMax = 8;
+  zoomMax = 4;
 
   private dragLastX = 0;
   private dragLastY = 0;
@@ -48,8 +48,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
       let originalHeight = isVertical
         ? availableHeight
         : availableWidth / aspectRatio;
-      const width = originalWidth * this.zoom;
-      const height = originalHeight * this.zoom;
+      const width = originalWidth * Math.pow(2, this.zoom - 1);
+      const height = originalHeight * Math.pow(2, this.zoom - 1);
       const initialShiftX = (availableWidth - width) / 2;
       const initialShiftY = (availableHeight - height) / 2;
       const maxShiftX = width > availableWidth
@@ -180,8 +180,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
     const screenHalfX = (this.containerWidth - this.containerPaddingX) / 2;
     const screenHalfY = (this.containerHeight - this.containerPaddingY) / 2;
 
-    this.imageShiftX = -((-this.imageShiftX + screenHalfX) / oldZoom * newZoom) + screenHalfX;
-    this.imageShiftY = -((-this.imageShiftY + screenHalfY) / oldZoom * newZoom) + screenHalfY;
+    this.imageShiftX = -((-this.imageShiftX + screenHalfX) / Math.pow(2, oldZoom - 1) * Math.pow(2, newZoom - 1)) + screenHalfX;
+    this.imageShiftY = -((-this.imageShiftY + screenHalfY) / Math.pow(2, oldZoom - 1) * Math.pow(2, newZoom - 1)) + screenHalfY;
     this.zoom = newZoom;
 
     this.changeDetectorRef.detectChanges();

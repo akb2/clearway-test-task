@@ -1,15 +1,16 @@
-<div #imageContainer
-     class="image"
+<div class="image"
      resizeObserver
      (resized)="onResize($event)"
      *ngIf="!!document">
   <div class="image__border">
-    <img [src]="document.imageUrl"
-         [alt]="document.name"
+    <div class="image__overlay"
          [ngStyle]="imageStyles"
          [ngClass]="{ grab: currentTool === tools.view, grabbing: isDragging && currentTool === tools.view }"
-         (load)="onImageLoad($event)"
-         (mousedown)="onStartDrag($event)" />
+         (mousedown)="onStartDrag($event)">
+      <img [src]="document.imageUrl"
+           [alt]="document.name"
+           (load)="onImageLoad($event)" />
+    </div>
     <!-- Управление -->
     <div class="image__actions">
       <!-- Перемещение картинки -->
