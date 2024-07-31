@@ -1,6 +1,6 @@
 <base-layout [breadCrumbs]="breadCrumbs$ | async"
              [loading]="loading">
-  <div class="container"
-       *ngIf="(document$ | async) as document">
+  <div class="container">
+    <app-document-viewer [document]="document$ | async"></app-document-viewer>
   </div>
 </base-layout>

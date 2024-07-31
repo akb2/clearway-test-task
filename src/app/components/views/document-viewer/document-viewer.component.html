@@ -1,0 +1,25 @@
+<div #imageContainer
+     class="image"
+     resizeObserver
+     (resized)="onResize($event)"
+     *ngIf="!!document">
+  <div class="image__border">
+    <img [src]="document.imageUrl"
+         [alt]="document.name"
+         [ngStyle]="imageStyles"
+         [ngClass]="{ grabbing: isDragging }"
+         (load)="onImageLoad($event)"
+         (mousedown)="onStartDrag($event)" />
+    <!-- Управление -->
+    <div class="image__actions">
+      <!-- Увеличить -->
+      <button mat-icon-button
+              aria-label="Увеличить"
+              (click)="onZoomIn()"><mat-icon>add</mat-icon></button>
+      <!-- Уменьшить -->
+      <button mat-icon-button
+              aria-label="Уменьшить"
+              (click)="onZoomOut()"><mat-icon>remove</mat-icon></button>
+    </div>
+  </div>
+</div>
