@@ -22,14 +22,15 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   private imageShiftX = 0;
   private imageShiftY = 0;
 
-  private zoom = 1;
   private zoomStep = 1;
-  private zoomMin = 1;
-  private zoomMax = 8;
+  zoom = 1;
+  zoomMin = 1;
+  zoomMax = 8;
 
-  isDragging = false;
   private dragLastX = 0;
   private dragLastY = 0;
+
+  isDragging = false;
 
   private destroyed$ = new Subject<void>();
 
@@ -106,11 +107,15 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   }
 
   onZoomIn() {
-    this.setZoom(this.zoom + this.zoomStep);
+    if (this.zoom + this.zoomStep <= this.zoomMax) {
+      this.setZoom(this.zoom + this.zoomStep);
+    }
   }
 
   onZoomOut() {
-    this.setZoom(this.zoom - this.zoomStep);
+    if (this.zoom - this.zoomStep >= this.zoomMin) {
+      this.setZoom(this.zoom - this.zoomStep);
+    }
   }
 
   onStartDrag(event: MouseEvent) {
