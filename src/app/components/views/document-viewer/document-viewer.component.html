@@ -7,11 +7,26 @@
     <img [src]="document.imageUrl"
          [alt]="document.name"
          [ngStyle]="imageStyles"
-         [ngClass]="{ grabbing: isDragging }"
+         [ngClass]="{ grab: currentTool === tools.view, grabbing: isDragging && currentTool === tools.view }"
          (load)="onImageLoad($event)"
          (mousedown)="onStartDrag($event)" />
     <!-- Управление -->
     <div class="image__actions">
+      <!-- Перемещение картинки -->
+      <button mat-icon-button
+              aria-label="Перемещение"
+              [disabled]="currentTool === tools.view"
+              (click)="onChangeTool(tools.view)"><mat-icon>open_with</mat-icon></button>
+      <!-- Добавление текста -->
+      <button mat-icon-button
+              aria-label="Добавить текст"
+              [disabled]="currentTool === tools.text"
+              (click)="onChangeTool(tools.text)"><mat-icon>text_fields</mat-icon></button>
+      <!-- Добавление картинки -->
+      <button mat-icon-button
+              aria-label="Добавить картинку"
+              [disabled]="currentTool === tools.image"
+              (click)="onChangeTool(tools.image)"><mat-icon>add_photo_alternate</mat-icon></button>
       <!-- Увеличить -->
       <button mat-icon-button
               aria-label="Увеличить"

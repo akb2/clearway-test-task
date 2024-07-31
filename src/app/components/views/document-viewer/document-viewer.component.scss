@@ -14,7 +14,10 @@
 
     > img {
       position: relative;
-      cursor: grab;
+
+      &.grab {
+        cursor: grab;
+      }
 
       &.grabbing {
         cursor: grabbing;

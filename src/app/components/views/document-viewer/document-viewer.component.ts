@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { AnyToInt } from "@app/helpers/converters";
-import { DocumentItem } from "@app/models/document";
+import { DocumentEditTool, DocumentItem } from "@app/models/document";
 import { fromEvent, merge, Subject, takeUntil } from "rxjs";
 
 @Component({
@@ -31,6 +31,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   private dragLastY = 0;
 
   isDragging = false;
+  currentTool = DocumentEditTool.view;
+  tools = DocumentEditTool;
 
   private destroyed$ = new Subject<void>();
 
@@ -118,6 +120,14 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
     }
   }
 
+  onChangeTool(tool: DocumentEditTool) {
+    if (this.currentTool !== tool) {
+      this.currentTool = tool;
+
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
   onStartDrag(event: MouseEvent) {
     event.preventDefault();
 
@@ -132,15 +142,18 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     if (this.isDragging) {
-      const deltaX = event.clientX - this.dragLastX;
-      const deltaY = event.clientY - this.dragLastY;
+      // Перемещение  документа
+      if (this.currentTool === DocumentEditTool.view) {
+        const deltaX = event.clientX - this.dragLastX;
+        const deltaY = event.clientY - this.dragLastY;
 
-      this.imageShiftX += deltaX;
-      this.imageShiftY += deltaY;
-      this.dragLastX = event.clientX;
-      this.dragLastY = event.clientY;
+        this.imageShiftX += deltaX;
+        this.imageShiftY += deltaY;
+        this.dragLastX = event.clientX;
+        this.dragLastY = event.clientY;
 
-      this.changeDetectorRef.detectChanges();
+        this.changeDetectorRef.detectChanges();
+      }
     }
   }
 
