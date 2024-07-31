@@ -15,8 +15,6 @@ export class DocumentEffects {
   loadDocuments$ = createEffect(
     () => this.actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
-      // Задержка загрузки списка документов, чтобы посмотреть на спиннер
-      delay(2000),
       switchMap(() => this.documentService.getList()),
       map(documents => documentUpdateItemsAction({ documents }))
     )
