@@ -4,11 +4,12 @@
     <mat-card-subtitle>Номер: {{document.id}}</mat-card-subtitle>
   </mat-card-header>
   <!-- Превью -->
-  <div class="image">
+  <a class="image"
+     routerLink="/documents/view/{{document.id}}">
     <img mat-card-image
          [src]="document.imageUrl"
          [alt]="document.name">
-  </div>
+  </a>
   <!-- Действия -->
   <mat-card-actions align="end">
     <a mat-button
