@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
+import { BreadCrumbs } from "@app/models/ui";
 
 @Component({
   selector: "base-layout",
@@ -10,6 +11,7 @@ import { Title } from "@angular/platform-browser";
 export class BaseLayoutComponent implements OnInit {
   @Input() loading = false;
   @Input() title = "";
+  @Input() breadCrumbs: BreadCrumbs[] = [];
 
   constructor(
     private titleService: Title,

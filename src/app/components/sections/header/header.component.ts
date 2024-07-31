@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { BreadCrumbs } from "@app/models/ui";
 
 @Component({
   selector: "app-header",
@@ -8,4 +9,5 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 })
 export class HeaderComponent {
   @Input() title = "Тестовое задание";
+  @Input() breadCrumbs: BreadCrumbs[] = [];
 }
