@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { BreadCrumbs } from "@app/models/ui";
 
 @Component({
   selector: "page-documents-view",
@@ -6,4 +7,18 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   styleUrls: ["./documents-view.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentsViewComponent { }
+export class DocumentsViewComponent {
+  loading = true;
+
+  get breadCrumbs() {
+    const documentsList: BreadCrumbs = {
+      title: "Документы",
+      link: "/documents"
+    };
+    const documentsView: BreadCrumbs = {
+      title: "Загрузка..."
+    };
+
+    return [documentsList, documentsView];
+  }
+}

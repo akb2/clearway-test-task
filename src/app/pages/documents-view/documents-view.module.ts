@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { noSubRoutes } from "@app/helpers/routes";
 import { DocumentsViewComponent } from "./documents-view.component";
+import { BaseLayoutModule } from "@app/components/layouts/base-layout/base-layout.module";
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { DocumentsViewComponent } from "./documents-view.component";
   ],
   imports: [
     RouterModule.forChild(noSubRoutes(DocumentsViewComponent)),
-    CommonModule
+    CommonModule,
+    BaseLayoutModule
   ]
 })
 export class DocumentsViewModule { }
