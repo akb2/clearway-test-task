@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { AnyToInt } from "@app/helpers/converters";
 import { DocumentEditTool, DocumentItem } from "@app/models/document";
 import { fromEvent, merge, Subject, takeUntil } from "rxjs";
@@ -11,6 +11,8 @@ import { fromEvent, merge, Subject, takeUntil } from "rxjs";
 })
 export class DocumentViewerComponent implements OnInit, OnDestroy {
   @Input() document: DocumentItem;
+
+  @ViewChild("imageOverlay") imageOverlay: ElementRef<HTMLImageElement>;
 
   private containerWidth = 0;
   private containerHeight = 0;
@@ -34,9 +36,14 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   currentTool = DocumentEditTool.view;
   tools = DocumentEditTool;
 
+  snippetWidth = 0;
+  snippetHeight = 0;
+  snippetTop = 0;
+  snippetLeft = 0;
+
   private destroyed$ = new Subject<void>();
 
-  get imageStyles() {
+  get styles() {
     if (this.containerWidth > 0 && this.containerHeight > 0 && this.imageOriginalWidth > 0 && this.imageOriginalHeight > 0) {
       const availableWidth = this.containerWidth - this.containerPaddingX;
       const availableHeight = this.containerHeight - this.containerPaddingY;
@@ -134,6 +141,10 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
     this.isDragging = true;
     this.dragLastX = event.clientX;
     this.dragLastY = event.clientY;
+    // Перемещение текста
+    if (this.currentTool === DocumentEditTool.text && this.imageOverlay?.nativeElement) {
+      this.setTextSnippetParams(event);
+    }
 
     this.changeDetectorRef.detectChanges();
   }
@@ -142,7 +153,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     if (this.isDragging) {
-      // Перемещение  документа
+      // Перемещение документа
       if (this.currentTool === DocumentEditTool.view) {
         const deltaX = event.clientX - this.dragLastX;
         const deltaY = event.clientY - this.dragLastY;
@@ -151,9 +162,13 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
         this.imageShiftY += deltaY;
         this.dragLastX = event.clientX;
         this.dragLastY = event.clientY;
-
-        this.changeDetectorRef.detectChanges();
       }
+      // Перемещение текста
+      else if (this.currentTool === DocumentEditTool.text && this.imageOverlay?.nativeElement) {
+        this.setTextSnippetParams(event);
+      }
+
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -185,5 +200,26 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
     this.zoom = newZoom;
 
     this.changeDetectorRef.detectChanges();
+  }
+
+  private setTextSnippetParams(event: MouseEvent) {
+    const imageOverlay = this.imageOverlay?.nativeElement;
+    const imageOverlayRect = imageOverlay.getBoundingClientRect();
+    const imageWidth = imageOverlayRect.width;
+    const imageHeight = imageOverlayRect.height;
+
+    const snippetWidth = (event.clientX - imageOverlayRect.left) / imageWidth * 100;
+    const snippetHeight = (event.clientY - imageOverlayRect.top) / imageHeight * 100;
+    const snippetLeft = (this.dragLastX - imageOverlayRect.left) / imageWidth * 100;
+    const snippetTop = (this.dragLastY - imageOverlayRect.top) / imageHeight * 100;
+
+    this.snippetWidth = Math.abs(snippetWidth - snippetLeft);
+    this.snippetHeight = Math.abs(snippetHeight - snippetTop);
+    this.snippetLeft = snippetWidth - snippetLeft > 0
+      ? snippetLeft
+      : snippetLeft - this.snippetWidth;
+    this.snippetTop = snippetHeight - snippetTop > 0
+      ? snippetTop
+      : snippetTop - this.snippetHeight;
   }
 }

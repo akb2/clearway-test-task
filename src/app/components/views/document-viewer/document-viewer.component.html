@@ -3,13 +3,21 @@
      (resized)="onResize($event)"
      *ngIf="!!document">
   <div class="image__border">
-    <div class="image__overlay"
-         [ngStyle]="imageStyles"
+    <div #imageOverlay
+         class="image__overlay"
+         [ngStyle]="styles"
          [ngClass]="{ grab: currentTool === tools.view, grabbing: isDragging && currentTool === tools.view }"
          (mousedown)="onStartDrag($event)">
       <img [src]="document.imageUrl"
            [alt]="document.name"
            (load)="onImageLoad($event)" />
+      <!-- Сниппеты -->
+      <div class="image__snippets">
+        <!-- Добавление текстового снипета -->
+        <ng-container [ngTemplateOutlet]="textSnippet"
+                      [ngTemplateOutletContext]="{ sizeEditing: true }"
+                      *ngIf="currentTool === tools.text && isDragging"></ng-container>
+      </div>
     </div>
     <!-- Управление -->
     <div class="image__actions">
@@ -41,3 +49,13 @@
     </div>
   </div>
 </div>
+
+<!-- Текстовый сниппет -->
+<ng-template #textSnippet
+             let-sizeEditing>
+  <app-document-viewer-text-snippet [sizeEditing]="sizeEditing"
+                                    [top]="snippetTop"
+                                    [left]="snippetLeft"
+                                    [width]="snippetWidth"
+                                    [height]="snippetHeight"></app-document-viewer-text-snippet>
+</ng-template>
