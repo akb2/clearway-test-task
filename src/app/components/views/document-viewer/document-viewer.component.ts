@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { AnyToInt } from "@app/helpers/converters";
-import { DocumentEditTool, DocumentItem } from "@app/models/document";
-import { fromEvent, merge, Subject, takeUntil } from "rxjs";
+import { DocumentEditTool, DocumentItem, DocumentItemType } from "@app/models/document";
+import { documentAddSnippetAction } from "@app/store/document/document.actions";
+import { documentSippetsSelector } from "@app/store/document/document.selectors";
+import { Store } from "@ngrx/store";
+import { fromEvent, map, merge, Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: "app-document-viewer",
@@ -40,6 +43,13 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   snippetHeight = 0;
   snippetTop = 0;
   snippetLeft = 0;
+
+  snippets$ = this.store$.select(documentSippetsSelector).pipe(
+    map(snippets => !!this.document
+      ? snippets.filter(snippet => snippet.documentId === this.document.id)
+      : []
+    )
+  );
 
   private destroyed$ = new Subject<void>();
 
@@ -83,6 +93,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    private store$: Store,
     private changeDetectorRef: ChangeDetectorRef
   ) { }
 
@@ -174,9 +185,23 @@ export class DocumentViewerComponent implements OnInit, OnDestroy {
 
   private onStopDrag(event: MouseEvent) {
     event.preventDefault();
-
+    // Добавить текстовый сниппет
+    if (this.isDragging && this.currentTool === DocumentEditTool.text) {
+      this.store$.dispatch(documentAddSnippetAction({
+        snippet: {
+          type: DocumentItemType.text,
+          documentId: this.document.id,
+          text: "",
+          width: this.snippetWidth,
+          height: this.snippetHeight,
+          left: this.snippetLeft,
+          top: this.snippetTop
+        }
+      }));
+    }
+    // Остановить перемещения
     this.isDragging = false;
-
+    // Обновить
     this.changeDetectorRef.detectChanges();
   }
 

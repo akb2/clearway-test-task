@@ -13,9 +13,13 @@
            (load)="onImageLoad($event)" />
       <!-- Сниппеты -->
       <div class="image__snippets">
+        <!-- Сниппеты -->
+        <ng-container [ngTemplateOutlet]="textSnippet"
+                      [ngTemplateOutletContext]="{ snippet, sizeEditing: false }"
+                      *ngFor="let snippet of snippets$ | async"></ng-container>
         <!-- Добавление текстового снипета -->
         <ng-container [ngTemplateOutlet]="textSnippet"
-                      [ngTemplateOutletContext]="{ sizeEditing: true }"
+                      [ngTemplateOutletContext]="{ snippet: { top: snippetTop, left: snippetLeft, width: snippetWidth, height: snippetHeight }, sizeEditing: true }"
                       *ngIf="currentTool === tools.text && isDragging"></ng-container>
       </div>
     </div>
@@ -52,10 +56,11 @@
 
 <!-- Текстовый сниппет -->
 <ng-template #textSnippet
-             let-sizeEditing>
+             let-sizeEditing="sizeEditing"
+             let-snippet="snippet">
   <app-document-viewer-text-snippet [sizeEditing]="sizeEditing"
-                                    [top]="snippetTop"
-                                    [left]="snippetLeft"
-                                    [width]="snippetWidth"
-                                    [height]="snippetHeight"></app-document-viewer-text-snippet>
+                                    [top]="snippet.top"
+                                    [left]="snippet.left"
+                                    [width]="snippet.width"
+                                    [height]="snippet.height"></app-document-viewer-text-snippet>
 </ng-template>
